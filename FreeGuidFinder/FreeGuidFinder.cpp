@@ -90,24 +90,31 @@ int main()
     }
     printf("Loaded %u guids.\n", vGuids.size());
 
-    uint32 min;
+    uint32 min = 0;
+
+    start:
     printf("Above: ");
     scanf("%d", &min);
     
-    uint32 last = 0;
+    uint32 last = min;
     for (auto i : vGuids)
     {
+        if (i < min)
+            continue;
+
         if ((i > min) && (i > last + 1))
         {
-            printf("Closest free guid: %u", last + 1);
+            printf("Closest free guid: %u\n", last + 1);
             break;
         }
         last = i;
     }
 
+    printf("Again? ");
     fflush(stdin);
-    getchar();
-    
+    if (getchar() == 'y')
+        goto start;
+
     GameDb.Uninitialise();
     return 0;
 }
